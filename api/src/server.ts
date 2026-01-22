@@ -4,7 +4,7 @@ import { videoRoutes } from "./routes.js";
 
 const app = Fastify({ logger: true });
 
-const RABBIT_URL = "amqp://guest:guest@localhost:5672";
+const RABBIT_URL = process.env.RABBITMQ_URL || "amqp://guest:guest@localhost:5672";
 const QUEUE_NAME = "pedidos_video";
 
 async function bootstrap() {
