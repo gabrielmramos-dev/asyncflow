@@ -1,5 +1,6 @@
 import { FastifyInstance } from "fastify";
 import { Channel } from "amqplib";
+import { v4 as uuidv4 } from 'uuid'
 
 export async function videoRoutes(
   app: FastifyInstance,
@@ -14,7 +15,7 @@ export async function videoRoutes(
     }
 
     const message = {
-      id: Math.random().toString(36).substring(7),
+      id: uuidv4(),
       videoName,
       status: "PENDING",
     };

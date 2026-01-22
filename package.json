@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "build": "tsc",
-    "start": "node dist/server.js"
+    "dev": "cd api && ts-node-dev --respawn --transpile-only src/server.ts",
+    "build": "cd api && tsc",
+    "start": "cd api && node dist/server.js"
   },
   "dependencies": {
     "amqplib": "^0.10.9",
-    "fastify": "^5.6.2"
+    "fastify": "^5.6.2",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@types/amqplib": "^0.10.8",
