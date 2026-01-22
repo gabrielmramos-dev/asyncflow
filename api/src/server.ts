@@ -1,5 +1,6 @@
 import Fastify from "fastify";
 import amqp from "amqplib";
+import { videoRoutes } from "./routes.js";
 
 const app = Fastify({ logger: true });
 
@@ -13,8 +14,10 @@ async function bootstrap() {
 
     await channel.assertQueue(QUEUE_NAME, { durable: true });
 
+    await app.register(videoRoutes, { channel });
+
     await app.listen({ port: 3000 });
-    console.log("API and RabbitMQ connected");
+    console.log("✅ API and RabbitMQ connected");
   } catch (error) {
     console.error(error);
     process.exit(1);
