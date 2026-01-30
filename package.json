@@ -1,23 +1,22 @@
 {
-  "name": "api",
+  "name": "asyncflow-root",
   "version": "1.0.0",
-  "type": "module",
+  "private": true,
+  "workspaces": [
+    "api",
+    "worker"
+  ],
   "scripts": {
-    "dev": "tsx watch api/src/server.ts",
-    "build": "tsc",
-    "start": "node dist/server.js"
-  },
-  "dependencies": {
-    "amqplib": "^0.10.9",
-    "fastify": "^5.6.2",
-    "uuid": "^13.0.0",
-    "zod": "^4.3.5"
+    "dev:api": "npm run dev -w api",
+    "dev:worker": "npm run dev -w worker"
   },
   "devDependencies": {
-    "@types/amqplib": "^0.10.8",
-    "@types/node": "^25.0.3",
-    "ts-node-dev": "^2.0.0",
-    "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "@types/pg": "^8.16.0",
+    "prisma": "^7.3.0"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.3.0",
+    "@prisma/client": "^7.3.0",
+    "pg": "^8.17.2"
   }
 }
