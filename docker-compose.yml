@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   rabbitmq:
     image: rabbitmq:4-management
@@ -5,6 +7,13 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+
+  db:
+    image: postgres:15
+    container_name: async-system-db
+    ports:
+      - "5432:5432"
     environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: asyncflow

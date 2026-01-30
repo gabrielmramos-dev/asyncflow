@@ -1,10 +1,13 @@
+import "dotenv/config";
+
 import Fastify from "fastify";
 import amqp from "amqplib";
 import { videoRoutes } from "./routes.js";
 
 const app = Fastify({ logger: true });
 
-const RABBIT_URL = process.env.RABBITMQ_URL || "amqp://guest:guest@localhost:5672";
+const RABBIT_URL =
+  process.env.RABBITMQ_URL || "amqp://guest:guest@localhost:5672";
 const QUEUE_NAME = "pedidos_video";
 
 async function bootstrap() {
@@ -17,7 +20,7 @@ async function bootstrap() {
     await app.register(videoRoutes, { channel });
 
     await app.listen({ port: 3000 });
-    console.log("✅ API and RabbitMQ connected");
+    console.log("API and RabbitMQ connected");
   } catch (error) {
     console.error(error);
     process.exit(1);

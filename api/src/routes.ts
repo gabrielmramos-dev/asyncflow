@@ -2,6 +2,19 @@ import { FastifyInstance } from "fastify";
 import { Channel } from "amqplib";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
+import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
+const adapter = new PrismaPg(pool);
+
+const prisma = new PrismaClient({
+  adapter,
+});
 
 export async function videoRoutes(
   app: FastifyInstance,
@@ -17,19 +30,20 @@ export async function videoRoutes(
   app.post("/convert", async (request, reply) => {
     const { videoName } = convertVideoSchema.parse(request.body);
 
-    const message = {
-      id: uuidv4(),
-      videoName,
-      status: "PENDING",
-    };
+    const video = await prisma.video.create({
+      data: {
+        videoName,
+        status: "PENDING",
+      },
+    });
 
     // publish the message to the queue
-    channel.sendToQueue(QUEUE_NAME, Buffer.from(JSON.stringify(message)), {
+    channel.sendToQueue(QUEUE_NAME, Buffer.from(JSON.stringify(video)), {
       persistent: true,
     });
 
     return reply
       .status(202)
-      .send({ message: "Task add to queue", id: message.id });
+      .send({ message: "Task add to queue", id: video.id });
   });
 }
